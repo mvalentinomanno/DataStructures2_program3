@@ -1,14 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Authors: Michael Valentino-Manno
+ * Date: 4/10/18
+ * Overview: Program that reads in an adjacency matrix and works prim's, kruskal's
+ * and floyd warshall's algorithms
  */
 package program3;
 
-/**
- *
- * @author katsura496
- */
 public class Program3 {
 
     /**
