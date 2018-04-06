@@ -6,13 +6,21 @@
  */
 package program3;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Program3 {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-    }
-    
+        graphs graphWork = new graphs();
+        graphWork.primsInput();
+        graphWork.kruskalsInput();
+        graphWork.floydwarshallsInput();
+    } // end main()
+
 }
