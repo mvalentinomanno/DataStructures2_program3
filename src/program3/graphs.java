@@ -123,8 +123,7 @@ public class graphs {
                         }
                     }
                 }
-                System.out.println("Initial matrix before Floyd-Warshall's algorithm");
-                printMatrix(amatrix);
+                floydAlgo(amatrix);
             }
             reader.close();
         } catch (IOException e) {
@@ -134,7 +133,7 @@ public class graphs {
     }
 
     public void printMatrix(String amatrix[][]) {
-        System.out.println("----------");
+        System.out.println("---------------------");
         for (int i = 0; i < amatrix.length; i++) {
             for (int j = 0; j < amatrix[i].length; j++) {
                 System.out.print(amatrix[i][j]);
@@ -145,14 +144,19 @@ public class graphs {
             System.out.println();
 
         }
-        System.out.println("----------");
+        System.out.println("--------------------");
     }
 
-    public void printInts(int amatrix[][]) {
-        System.out.println("----------");
+    public void printMatrixInts(int amatrix[][], String[] vert) {
         for (int i = 0; i < amatrix.length; i++) {
+            System.out.print(vert[i] + " ");
             for (int j = 0; j < amatrix[i].length; j++) {
-                System.out.print(amatrix[i][j]);
+                if (amatrix[i][j] > 10000000) {
+                    System.out.print("x");
+                } else {
+                    System.out.print(amatrix[i][j]);
+                }
+
                 if (amatrix[i].length - j > 1) {
                     System.out.print(",");
                 }
@@ -160,7 +164,7 @@ public class graphs {
             System.out.println();
 
         }
-        System.out.println("----------");
+        System.out.println("--------------------");
     }
 
     public int[][] primsAlgo(String G[][]) {
@@ -188,36 +192,25 @@ public class graphs {
             for (int j = 0; j < T.length; j++) {
                 T[i][j] = 0;
 
-                if (G[i+1][j].equals("x")) {
+                if (G[i + 1][j].equals("x")) {
                     intG[i][j] = Integer.MAX_VALUE;
                 } else {
-                    intG[i][j] = Integer.parseInt(G[i+1][j]);
+                    intG[i][j] = Integer.parseInt(G[i + 1][j]);
                 }
 
             }
         }
-        
+
         vertex Q[] = new vertex[D.length];
-        
-        for(int i = 0; i < Q.length; i++){
+
+        for (int i = 0; i < Q.length; i++) {
             Q[i] = new vertex(D[i], verticies[i]);
             sort(Q, i);
         }
-        
-         Q[0].visit = true;
-         int size = Q.length;
-         int count = 0;
-         vertex u = null;
-         int x = Integer.MAX_VALUE;
-         int y = -1;
-         int minW = x;
-         
-         
-        
-        
+
         return T;
     }
-    
+
     public static vertex[] sort(vertex[] s, int n) { //bubble sort
 
         int inc;
@@ -235,4 +228,53 @@ public class graphs {
         return s; //sorted tree array
     }
 
+    public void floydAlgo(String amatrix[][]) {
+        String vert[] = amatrix[0];
+        int d[][] = new int[amatrix[0].length][amatrix[0].length];
+
+        for (int i = 0; i < d.length; i++) {
+            for (int j = 0; j < d.length; j++) {
+                if (amatrix[i + 1][j].equals("x")) {
+                    d[i][j] = 400000000;
+                } else {
+                    d[i][j] = Integer.parseInt(amatrix[i + 1][j]);
+                }
+            }
+        }
+
+        for (int i = 0; i < d.length; i++) {
+            d[i][i] = 0;
+        }
+        System.out.println("Initial matrix before Floyd-Warshall's algorithm");
+        printMatrixInts(d, vert);
+        for (int k = 0; k < d.length; k++) {
+            for (int i = 0; i < d.length; i++) {
+                for (int j = 0; j < d.length; j++) {
+                    if (d[i][j] > (d[i][k] + d[k][j])) {
+                        d[i][j] = d[i][k] + d[k][j];
+                        System.out.print("  ");
+                        for (int y = 0; y < vert.length; y++) {
+                            System.out.print(vert[y]);
+                            if (vert.length - y > 1) {
+                                System.out.print(",");
+                            }
+                        }
+                        System.out.println();
+                        printMatrixInts(d, vert);
+                    }
+                }
+            }
+        }
+        System.out.println("The final matrix is as follows:");
+        System.out.println("--------------------");
+        System.out.print("  ");
+        for (int y = 0; y < vert.length; y++) {
+            System.out.print(vert[y]);
+            if (vert.length - y > 1) {
+                System.out.print(",");
+            }
+        }
+        System.out.println();
+        printMatrixInts(d, vert);
+    }
 }
