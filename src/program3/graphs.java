@@ -46,18 +46,7 @@ public class graphs {
                     }
                 }
                 System.out.println("Initial matrix before Prim's algorithm");
-                System.out.println("----------");
-                for (int i = 0; i < amatrix.length; i++) {
-                    for (int j = 0; j < amatrix[i].length; j++) {
-                        System.out.print(amatrix[i][j]);
-                        if (amatrix[i].length - j > 1) {
-                            System.out.print(",");
-                        }
-                    }
-                    System.out.println();
-
-                }
-                System.out.println("----------");
+                printMatrix(amatrix);
             }
             reader.close();
         } catch (IOException e) {
@@ -96,18 +85,7 @@ public class graphs {
                     }
                 }
                 System.out.println("Initial matrix before Kruskal's algorithm");
-                System.out.println("----------");
-                for (int i = 0; i < amatrix.length; i++) {
-                    for (int j = 0; j < amatrix[i].length; j++) {
-                        System.out.print(amatrix[i][j]);
-                        if (amatrix[i].length - j > 1) {
-                            System.out.print(",");
-                        }
-                    }
-                    System.out.println();
-
-                }
-                System.out.println("----------");
+                printMatrix(amatrix);
             }
             reader.close();
         } catch (IOException e) {
@@ -146,23 +124,27 @@ public class graphs {
                     }
                 }
                 System.out.println("Initial matrix before Floyd-Warshall's algorithm");
-                System.out.println("----------");
-                for (int i = 0; i < amatrix.length; i++) {
-                    for (int j = 0; j < amatrix[i].length; j++) {
-                        System.out.print(amatrix[i][j]);
-                        if (amatrix[i].length - j > 1) {
-                            System.out.print(",");
-                        }
-                    }
-                    System.out.println();
-
-                }
-                System.out.println("----------");
+                printMatrix(amatrix);
             }
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public void printMatrix(String amatrix[][]) {
+        System.out.println("----------");
+        for (int i = 0; i < amatrix.length; i++) {
+            for (int j = 0; j < amatrix[i].length; j++) {
+                System.out.print(amatrix[i][j]);
+                if (amatrix[i].length - j > 1) {
+                    System.out.print(",");
+                }
+            }
+            System.out.println();
+
+        }
+        System.out.println("----------");
     }
 }
