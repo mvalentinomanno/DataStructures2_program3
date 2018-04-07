@@ -22,7 +22,7 @@ public class graphs {
 
         try {
 
-            File file = new File("input/primInput.csv"); //set up input file and reader
+            File file = new File("input/primInput.txt"); //set up input file and reader
             reader = new BufferedReader(new FileReader(file));
             int count = 0;
             String firstl;
@@ -47,12 +47,12 @@ public class graphs {
                 }
                 System.out.println("Initial matrix before Prim's algorithm");
                 printMatrix(amatrix);
-                primsAlgo(amatrix);
             }
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void kruskalsInput() {
@@ -61,7 +61,7 @@ public class graphs {
 
         try {
 
-            File file = new File("input/kruskalInput.csv"); //set up input file and reader
+            File file = new File("input/kruskalInput.txt"); //set up input file and reader
             reader = new BufferedReader(new FileReader(file));
             int count = 0;
             String firstl;
@@ -100,7 +100,7 @@ public class graphs {
 
         try {
 
-            File file = new File("input/floydwarshallInput.csv"); //set up input file and reader
+            File file = new File("input/floydwarshallInput.txt"); //set up input file and reader
             reader = new BufferedReader(new FileReader(file));
             int count = 0;
             String firstl;
@@ -125,12 +125,78 @@ public class graphs {
                 }
                 System.out.println("Initial matrix before Floyd-Warshall's algorithm");
                 printMatrix(amatrix);
+                floydwarshalls(amatrix);
             }
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+    
+    public void floydwarshalls(String amatrix[][])
+    {
+        int x = amatrix.length;
+        int a,b,c;
+ 
+        for(int z = 1; z < x; z++)
+        {
+             amatrix[z][z-1] = "0";
+        }
+        
+        System.out.println("Updated matrix for Floyd-Warshall's algorithm");
+        printMatrix(amatrix);
+        
+        
+       for(int k = 1; k < x; k++)
+        {
+           for(int i = 1; i < x; i++)
+           {
+               for(int j = 1; j < x; j++)
+               {
+                   
+                   
+                   
+                   try
+                   {    
+                        a = Integer.parseInt(amatrix[i][j-1]);
+                   }
+                   catch(NumberFormatException e)
+                   {
+                        a = 9999999;
+                   }
+                   
+                   try
+                   {    
+                        b = Integer.parseInt(amatrix[i][k-1]);
+                   }
+                   catch(NumberFormatException e)
+                   {
+                        b = 9999999;
+                   }
+                   
+                   try
+                   {    
+                        c = Integer.parseInt(amatrix[k][j-1]);
+                   }
+                   catch(NumberFormatException e)
+                   {
+                        c = 9999999;
+                   }
+                  
+                   if(a > b + c)
+                   {
+                      
+                       amatrix[i][j-1] = Integer.toString(b+c);
+                   }
+                       
+                       printMatrix(amatrix);
+                   
+                   
+               }
+            
+           } 
+        }
     }
 
     public void printMatrix(String amatrix[][]) {
@@ -147,92 +213,4 @@ public class graphs {
         }
         System.out.println("----------");
     }
-
-    public void printInts(int amatrix[][]) {
-        System.out.println("----------");
-        for (int i = 0; i < amatrix.length; i++) {
-            for (int j = 0; j < amatrix[i].length; j++) {
-                System.out.print(amatrix[i][j]);
-                if (amatrix[i].length - j > 1) {
-                    System.out.print(",");
-                }
-            }
-            System.out.println();
-
-        }
-        System.out.println("----------");
-    }
-
-    public int[][] primsAlgo(String G[][]) {
-        String verticies[] = new String[G[0].length];
-        boolean visit[] = new boolean[verticies.length];
-        int D[] = new int[verticies.length];
-        int T[][] = new int[verticies.length][verticies.length];
-        int intG[][] = new int[verticies.length][verticies.length];
-
-        visit[0] = true;
-        for (int o = 1; o < visit.length; o++) {
-            visit[o] = false;
-        }
-
-        for (int i = 0; i < G[0].length; i++) {
-            verticies[i] = G[0][i];
-        }
-
-        D[0] = 0;
-        for (int i = 1; i < D.length; i++) {
-            D[i] = Integer.MAX_VALUE;
-        }
-
-        for (int i = 0; i < T.length; i++) {
-            for (int j = 0; j < T.length; j++) {
-                T[i][j] = 0;
-
-                if (G[i+1][j].equals("x")) {
-                    intG[i][j] = Integer.MAX_VALUE;
-                } else {
-                    intG[i][j] = Integer.parseInt(G[i+1][j]);
-                }
-
-            }
-        }
-        
-        vertex Q[] = new vertex[D.length];
-        
-        for(int i = 0; i < Q.length; i++){
-            Q[i] = new vertex(D[i], verticies[i]);
-            sort(Q, i);
-        }
-        
-         Q[0].visit = true;
-         int size = Q.length;
-         int count = 0;
-         vertex u = null;
-         int x = Integer.MAX_VALUE;
-         int y = -1;
-         int minW = x;
-         
-         
-        
-        
-        return T;
-    }
-    
-    public static vertex[] sort(vertex[] s, int n) { //bubble sort
-
-        int inc;
-        int ind;
-
-        for (inc = 0; inc < n - 1; inc++) { //sorts weights from least to greatest
-            for (ind = 0; ind < n - inc - 1; ind++) {
-                if (s[ind].getWeight() > (s[ind + 1].getWeight())) {
-                    vertex temp = s[ind]; //swaps the two elements
-                    s[ind] = s[ind + 1];
-                    s[ind + 1] = temp;
-                }
-            }
-        }
-        return s; //sorted tree array
-    }
-
 }

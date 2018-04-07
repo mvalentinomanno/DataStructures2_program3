@@ -18,8 +18,8 @@ public class Program3 {
      */
     public static void main(String[] args) {
         graphs graphWork = new graphs();
-        graphWork.primsInput();
-        graphWork.kruskalsInput();
+       // graphWork.primsInput();
+       // graphWork.kruskalsInput();
         graphWork.floydwarshallsInput();
     } // end main()
 
