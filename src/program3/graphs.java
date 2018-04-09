@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.PriorityQueue;
 
 /**
  *
@@ -47,7 +48,7 @@ public class graphs {
                 }
                 System.out.println("Initial matrix before Prim's algorithm");
                 printMatrix(amatrix);
-                primsAlgo(amatrix);
+                primsAlgoo(amatrix);
             }
             reader.close();
         } catch (IOException e) {
@@ -86,6 +87,7 @@ public class graphs {
                 }
                 System.out.println("Initial matrix before Kruskal's algorithm");
                 printMatrix(amatrix);
+                kruskals(amatrix);
             }
             reader.close();
         } catch (IOException e) {
@@ -166,7 +168,7 @@ public class graphs {
         }
         System.out.println("--------------------");
     }
-
+/*
     public int[][] primsAlgo(String G[][]) {
         String verticies[] = new String[G[0].length];
         boolean visit[] = new boolean[verticies.length];
@@ -201,32 +203,36 @@ public class graphs {
             }
         }
 
-        vertex Q[] = new vertex[D.length];
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        for (int i = 0; i < D.length; i++) {
+            pq.add(new Node(D[i], i, i));
 
-        for (int i = 0; i < Q.length; i++) {
-            Q[i] = new vertex(D[i], verticies[i]);
-            sort(Q, i);
+        }
+
+        Node u;
+        while (!pq.isEmpty()) {
+            u = pq.remove();
+
+            for (int i = 0; i < D.length; i++) {
+                if (intG[u.vertexa][i] < D[i]) {
+
+                    D[i] = intG[u.vertexa][i];
+
+                    System.out.println(D[i] + " " + verticies[u.vertexa] + " " + verticies[i]);
+                    u.vertexb = i;
+                    //    visit[i] = true;
+                    T[u.vertexa][i] = D[i];
+
+                    pq.add(new Node(D[i], u.vertexa, i));
+
+                }
+            }
+            // printMatrixInts(T, verticies);
         }
 
         return T;
     }
-
-    public static vertex[] sort(vertex[] s, int n) { //bubble sort
-
-        int inc;
-        int ind;
-
-        for (inc = 0; inc < n - 1; inc++) { //sorts weights from least to greatest
-            for (ind = 0; ind < n - inc - 1; ind++) {
-                if (s[ind].getWeight() > (s[ind + 1].getWeight())) {
-                    vertex temp = s[ind]; //swaps the two elements
-                    s[ind] = s[ind + 1];
-                    s[ind + 1] = temp;
-                }
-            }
-        }
-        return s; //sorted tree array
-    }
+    */
 
     public void floydAlgo(String amatrix[][]) {
         String vert[] = amatrix[0];
@@ -276,5 +282,113 @@ public class graphs {
         }
         System.out.println();
         printMatrixInts(d, vert);
+    }
+
+    public int[][] kruskals(String G[][]) {
+        String verticies[] = new String[G[0].length];
+        boolean visit[] = new boolean[verticies.length];
+        int T[][] = new int[verticies.length][verticies.length];
+        int intG[][] = new int[verticies.length][verticies.length];
+
+        for (int o = 0; o < visit.length; o++) {
+            visit[o] = false;
+        }
+
+        for (int i = 0; i < G[0].length; i++) {
+            verticies[i] = G[0][i];
+        }
+
+        for (int i = 0; i < T.length; i++) {
+            for (int j = 0; j < T.length; j++) {
+                T[i][j] = 0;
+
+                if (G[i + 1][j].equals("x")) {
+                    intG[i][j] = Integer.MAX_VALUE;
+                } else {
+                    intG[i][j] = Integer.parseInt(G[i + 1][j]);
+                }
+
+            }
+        }
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        for (int i = 0; i < intG.length; i++) {
+            for (int j = 0; j < intG[i].length; j++) {
+                if (intG[i][j] < Integer.MAX_VALUE) {
+                    pq.add(new Node(intG[i][j], i, j));
+                }
+            }
+        }
+        int count = T.length;
+        Node u = null;
+        boolean stop = false;
+        System.out.println("Kruskal's MST edges:");
+        while (count > 1 && !stop) {
+            if (!pq.isEmpty()) {
+                u = pq.remove();
+            }else{
+                stop = true;
+            }
+
+            if (visit[u.vertexa] == false || visit[u.vertexb] == false) {
+                T[u.vertexa][u.vertexb] = u.weight;
+                count--;
+                visit[u.vertexa] = true;
+                visit[u.vertexb] = true;
+                System.out.println(verticies[u.vertexa] + " --> " + verticies[u.vertexb] + " " + u.weight);
+            }
+
+        }
+          System.out.println("--------------------");
+        return T;
+    }
+
+    public void primsAlgoo(String G[][]) {
+        String verticies[] = new String[G[0].length];
+        boolean visit[] = new boolean[verticies.length];
+        int intG[][] = new int[verticies.length][verticies.length];
+
+        for (int o = 1; o < visit.length; o++) {
+            visit[o] = false;
+        }
+
+        for (int i = 0; i < G[0].length; i++) {
+            verticies[i] = G[0][i];
+        }
+
+        for (int i = 0; i < intG.length; i++) {
+            for (int j = 0; j < intG.length; j++) {
+                if (G[i + 1][j].equals("x")) {
+                    intG[i][j] = Integer.MAX_VALUE;
+                } else {
+                    intG[i][j] = Integer.parseInt(G[i + 1][j]);
+                }
+
+            }
+        }
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        for (int i = 0; i < intG.length; i++) {
+                if (intG[0][i] < Integer.MAX_VALUE) {
+                    pq.add(new Node(intG[0][i], 0, i));
+                } 
+        }
+
+        Node u;
+        System.out.println("Prim's MST edges:");
+        while (!pq.isEmpty()) {
+            u = pq.remove();
+
+            if (visit[u.vertexa] == false || visit[u.vertexb] == false) {
+                visit[u.vertexa] = true;
+                visit[u.vertexb] = true;
+                System.out.println(verticies[u.vertexa] + " --> " + verticies[u.vertexb] + ", weight: " + u.weight);
+                
+                for(int i = 0; i < intG.length; i++){
+                    pq.add(new Node(intG[u.vertexb][i], u.vertexb,i));
+                }
+            }
+        }
+        System.out.println("--------------------");
     }
 }
