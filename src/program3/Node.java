@@ -1,16 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Authors: Michael Valentino-Manno, Benjamin Seal
+ * Date: 4/10/18
+ * Overview: Program that reads in an adjacency matrix and works prim's, kruskal's
+ * and floyd warshall's algorithms. The input files are required to be CSV files with
+ * x's to represent infinity and the first row is the vertex names
  */
 package program3;
 
-/**
- *
- * @author katsura496
- */
-public class Node implements Comparable <Node> {
-    int weight;
+public class Node implements Comparable <Node> { //node class to represent an edge
+    int weight; //edge has a weight and two verticies
     public int vertexa;
     public int vertexb;
     
@@ -21,7 +19,7 @@ public class Node implements Comparable <Node> {
     }
     
     @Override
-    public int compareTo(Node t){
+    public int compareTo(Node t){ //comparable so priority Q can sort
         if(this.weight > t.weight){
             return 1;
         }else if(this.weight < t.weight){
@@ -29,9 +27,4 @@ public class Node implements Comparable <Node> {
         }
         return 0;
     }
-    
-    public int getWeight(){
-        return weight;
-    }
-   
 }
