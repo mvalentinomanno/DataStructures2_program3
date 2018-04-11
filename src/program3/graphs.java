@@ -243,7 +243,7 @@ public class graphs {
         for (int i = 0; i < intG.length; i++) {
             if (intG[0][i] < Integer.MAX_VALUE) {
                 pq.add(new Node(intG[0][i], 0, i)); //add first row to be checked, the A line
-            }
+            }                                       //always starts from the first verticy
         }
 
         Node u;
@@ -268,19 +268,18 @@ public class graphs {
         String verticies[] = new String[G[0].length]; //vertex labels
         String clusters[] = new String[256]; //arrays hold clusters
         String clusters2[] = new String[256];
+        int intG[][] = new int[verticies.length][verticies.length]; //adjacency matrix
 
-        int intG[][] = new int[verticies.length][verticies.length];
-
-        for (int i = 0; i < G[0].length; i++) {
+        for (int i = 0; i < G[0].length; i++) { //read in verticies
             verticies[i] = G[0][i];
         }
 
-        for (int i = 0; i < clusters.length; i++) {
+        for (int i = 0; i < clusters.length; i++) { //initialize clusters with symbols that wont be used
             clusters[i] = "'";
             clusters2[i] = "%";
         }
 
-        for (int i = 0; i < verticies.length; i++) {
+        for (int i = 0; i < verticies.length; i++) { //read in adjacency matrix
             for (int j = 0; j < verticies.length; j++) {
                 if (G[i + 1][j].equals("x")) {
                     intG[i][j] = Integer.MAX_VALUE;
@@ -291,17 +290,17 @@ public class graphs {
             }
         }
 
-        PriorityQueue<Node> pq = new PriorityQueue<>();
+        PriorityQueue<Node> pq = new PriorityQueue<>(); //initialize priority queue
         for (int i = 0; i < intG.length; i++) {
-            for (int j = 0; j < intG[i].length; j++) {
+            for (int j = 0; j < intG[i].length; j++) { //add every edge (non infinity) to the Q
                 if (intG[i][j] < Integer.MAX_VALUE) {
                     pq.add(new Node(intG[i][j], i, j));
                 }
             }
         }
-        int count = verticies.length;
+        int count = verticies.length; //keeps track of how many edges are remaining to be added
         Node u = null;
-        boolean same = false;
+        boolean same = false; //booleans used for cases in following while
         boolean ck = false;
         boolean kk = false;
         boolean yes1 = false;
@@ -309,22 +308,22 @@ public class graphs {
         int cind = 0;
 
         System.out.println("Kruskal's MST edges:");
-        while (count > 1) {
-            same = false;
+        while (count > 1) { //# of verticies - 1 is the amount of edges in the MST
+            same = false; //all initially false
             yes1 = false;
             yes2 = false;
             ck = false;
             kk = false;
 
             if (!pq.isEmpty()) {
-                u = pq.remove();
+                u = pq.remove(); //remove first item
             }
 
             for (int i = 0; i < clusters.length; i++) {
                 if (verticies[u.vertexa].equals(clusters[i])) {
                     for (int j = 0; j < clusters.length; j++) {
                         if (verticies[u.vertexb].equals(clusters[j])) {
-                            same = true;
+                            same = true; //if they're in same cluster
                         }
                     }
                 }
@@ -334,19 +333,19 @@ public class graphs {
                 if (verticies[u.vertexa].equals(clusters2[i])) {
                     for (int j = 0; j < clusters.length; j++) {
                         if (verticies[u.vertexb].equals(clusters2[j])) {
-                            same = true;
+                            same = true; //if they're in same cluster
                         }
                     }
                 }
             }
 
             int uu = 0;
-            for (int i = 0; i < clusters.length; i++) {
+            for (int i = 0; i < clusters.length; i++) { //checks if items are in different clusters
                 for (int j = 0; j < clusters.length; j++) {
                     if (clusters[i].equals(clusters2[j])) {
                         for (int t = 0; t < clusters2.length; t++) {
                             if (!(clusters2[t].equals("%")) && !(clusters2[t].equals(clusters2[j]))) {
-                                if (uu < 10) {
+                                if (uu < 10) { //if they're in different clusters, add one cluster to the other
                                     clusters[cind] = clusters2[t];
                                     cind++;
                                     uu++;
@@ -357,9 +356,9 @@ public class graphs {
                 }
             }
 
-            for (int i = 0; i < clusters.length; i++) {
+            for (int i = 0; i < clusters.length; i++) { //checks if items are in the same cluster
                 if (verticies[u.vertexb].equals(clusters[i])) {
-                    ck = true;
+                    ck = true; 
                 }
                 if (verticies[u.vertexa].equals(clusters[i])) {
                     kk = true;
@@ -367,7 +366,7 @@ public class graphs {
 
             }
 
-            for (int i = 0; i < clusters.length; i++) {
+            for (int i = 0; i < clusters.length; i++) { //checks if items are in the same clusers
                 if (verticies[u.vertexb].equals(clusters2[i])) {
                     ck = true;
                 }
@@ -378,10 +377,10 @@ public class graphs {
             }
 
             if (count < verticies.length) {
-                if (!ck && !kk) {
+                if (!ck && !kk) { //if the items aren't in a cluster
                     System.out.println(verticies[u.vertexa] + " <--> " + verticies[u.vertexb] + ", weight: " + u.weight);
-                    count--;
-                    clusters2[cind] = verticies[u.vertexa];
+                    count--; //add the vertex, decrease the remaining edges
+                    clusters2[cind] = verticies[u.vertexa]; //add the edes to the new cluster
                     cind++;
                     clusters2[cind] = verticies[u.vertexb];
                     cind++;
@@ -389,24 +388,24 @@ public class graphs {
                 }
             }
 
-            if (!same) {
+            if (!same) { //if the items aren't in the same cluster
                 System.out.println(verticies[u.vertexa] + " <--> " + verticies[u.vertexb] + ", weight: " + u.weight);
-                count--;
+                count--; //add vertex, decrease remaining edges
 
-                for (int i = 0; i < clusters.length; i++) {
-                    if (clusters[i].equals(verticies[u.vertexa])) {
+                for (int i = 0; i < clusters.length; i++) { //checks for the edge that isnt already a part of a cluster
+                    if (clusters[i].equals(verticies[u.vertexa])) { //vertex a is?
                         yes1 = true;
                     }
-                    if (clusters[i].equals(verticies[u.vertexb])) {
+                    if (clusters[i].equals(verticies[u.vertexb])) { //vertex b is?
                         yes2 = true;
                     }
                 }
 
-                if (!yes1) {
+                if (!yes1) { //if a wasnt found, add it to cluster
                     clusters[cind] = verticies[u.vertexa];
                     cind++;
                 }
-                if (!yes2) {
+                if (!yes2) { //if b wasnt found, add it to cluster
                     clusters[cind] = verticies[u.vertexb];
                     cind++;
                 }
